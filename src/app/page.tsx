@@ -16,6 +16,7 @@ export default function Home() {
   const [emergencyPhone, setEmergencyPhone] = useState('');
   const [emergencyVehicle, setEmergencyVehicle] = useState('');
   const [emergencyProblem, setEmergencyProblem] = useState('');
+  const [emergencyLocation, setEmergencyLocation] = useState('');
   
   // Tracking State
   const [trackingJobId, setTrackingJobId] = useState<string | null>(null);
@@ -72,39 +73,24 @@ export default function Home() {
     e.preventDefault();
     setIsRequesting(true);
 
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
-      setIsRequesting(false);
-      return;
+    const jobNum = 'EMG-' + Math.floor(Math.random() * 10000);
+
+    const { data, error } = await supabase.from('jobs').insert([{
+      job_number: jobNum,
+      problem: `SOS: ${emergencyProblem} | Vehicle: ${emergencyVehicle} | From: ${emergencyName} (${emergencyPhone})`,
+      location: emergencyLocation,
+      status: 'PENDING_DISPATCH'
+    }]).select();
+
+    if (!error && data && data.length > 0) {
+      setTrackingJobId(data[0].id);
+      setTrackingJobNumber(jobNum);
+      localStorage.setItem('trackingJobId', data[0].id);
+      localStorage.setItem('trackingJobNumber', jobNum);
+    } else {
+      alert("Failed to send request. Please call us directly.");
     }
-
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const lat = position.coords.latitude.toFixed(5);
-      const lng = position.coords.longitude.toFixed(5);
-      const locationString = `${lat}, ${lng}`;
-      const jobNum = 'EMG-' + Math.floor(Math.random() * 10000);
-
-      const { data, error } = await supabase.from('jobs').insert([{
-        job_number: jobNum,
-        problem: `SOS: ${emergencyProblem} | Vehicle: ${emergencyVehicle} | From: ${emergencyName} (${emergencyPhone})`,
-        location: locationString,
-        status: 'PENDING_DISPATCH'
-      }]).select();
-
-      if (!error && data && data.length > 0) {
-        setTrackingJobId(data[0].id);
-        setTrackingJobNumber(jobNum);
-        localStorage.setItem('trackingJobId', data[0].id);
-        localStorage.setItem('trackingJobNumber', jobNum);
-      } else {
-        alert("Failed to send request. Please call us directly.");
-      }
-      setIsRequesting(false);
-    }, (error) => {
-      console.error("Geolocation error:", error);
-      alert("Unable to retrieve your location automatically. Please ensure location services are enabled, or call us directly.");
-      setIsRequesting(false);
-    }, { timeout: 10000, maximumAge: 60000, enableHighAccuracy: true });
+    setIsRequesting(false);
   };
 
   const clearTracking = () => {
@@ -157,6 +143,11 @@ export default function Home() {
                       <input 
                         type="text" placeholder={t('vehicle_placeholder')} required 
                         value={emergencyVehicle} onChange={e => setEmergencyVehicle(e.target.value)}
+                        style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
+                      />
+                      <input 
+                        type="text" placeholder="Exact Location or Landmark" required 
+                        value={emergencyLocation} onChange={e => setEmergencyLocation(e.target.value)}
                         style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
                       />
                       <select 
