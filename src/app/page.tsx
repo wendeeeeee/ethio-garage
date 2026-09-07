@@ -100,10 +100,11 @@ export default function Home() {
         alert("Failed to send request. Please call us directly.");
       }
       setIsRequesting(false);
-    }, () => {
-      alert("Unable to retrieve your location. Please ensure location services are enabled, or call us directly.");
+    }, (error) => {
+      console.error("Geolocation error:", error);
+      alert("Unable to retrieve your location automatically. Please ensure location services are enabled, or call us directly.");
       setIsRequesting(false);
-    });
+    }, { timeout: 10000, maximumAge: 60000, enableHighAccuracy: true });
   };
 
   const clearTracking = () => {
