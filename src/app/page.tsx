@@ -228,8 +228,8 @@ export default function Home() {
                 <div style={{ height: '1px', width: '50px', background: 'var(--border-color)' }}></div>
               </div>
 
-              <a href="tel:09XXXXXXXX" className="btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.25rem', borderRadius: '999px', boxShadow: 'var(--shadow-glow)' }}>
-                📞 09XX-XXX-XXX
+              <a href="tel:0919910089" className="btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.25rem', borderRadius: '999px', boxShadow: 'var(--shadow-glow)' }}>
+                📞 0919 91 00 89
               </a>
             </div>
           </div>
