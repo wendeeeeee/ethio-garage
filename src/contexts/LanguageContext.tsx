@@ -29,6 +29,7 @@ const translations: Translations = {
   name_placeholder: { en: 'Your Name', am: 'ስምዎ' },
   phone_placeholder: { en: 'Your Phone Number', am: 'ስልክ ቁጥርዎ' },
   vehicle_placeholder: { en: 'Vehicle (e.g. Toyota Vitz)', am: 'መኪና (ለምሳሌ Toyota Vitz)' },
+  location_placeholder: { en: 'Exact Location or Landmark', am: 'ትክክለኛ አድራሻ ወይም ታዋቂ ቦታ' },
   issue_placeholder: { en: 'What is the issue?', am: 'ችግሩ ምንድን ነው?' },
   describe_issue: { en: 'Describe your issue...', am: 'ችግርዎን ያብራሩ...' },
   locating: { en: 'Locating you...', am: 'ቦታዎን እየፈለግን ነው...' },

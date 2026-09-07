@@ -23,6 +23,7 @@ export default function Home() {
   const [trackingJobNumber, setTrackingJobNumber] = useState<string | null>(null);
   const [assignedMechanic, setAssignedMechanic] = useState<any>(null);
   const [manualToken, setManualToken] = useState('');
+  const [activeTab, setActiveTab] = useState<'request' | 'track'>('request');
 
   useEffect(() => {
     const savedJobId = localStorage.getItem('trackingJobId');
@@ -123,63 +124,101 @@ export default function Home() {
               
               {!trackingJobId ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', maxWidth: '450px' }}>
-                  <div className="card glass" style={{ padding: '2rem', textAlign: 'left', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 10px 30px rgba(239, 68, 68, 0.1)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                      <div style={{ background: 'var(--danger-color)', color: 'white', padding: '0.5rem', borderRadius: '50%', display: 'flex' }}>🚨</div>
-                      <h3 style={{ margin: 0, color: 'var(--danger-color)' }}>{t('rescue_form_title')}</h3>
-                    </div>
-                    <p style={{ marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('rescue_form_desc')}</p>
-                    <form onSubmit={handleEmergencyRescue} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <input 
-                        type="text" placeholder={t('name_placeholder')} required 
-                        value={emergencyName} onChange={e => setEmergencyName(e.target.value)}
-                        style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
-                      />
-                      <input 
-                        type="text" placeholder={t('phone_placeholder')} required 
-                        value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value)}
-                        style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
-                      />
-                      <input 
-                        type="text" placeholder={t('vehicle_placeholder')} required 
-                        value={emergencyVehicle} onChange={e => setEmergencyVehicle(e.target.value)}
-                        style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
-                      />
-                      <input 
-                        type="text" placeholder="Exact Location or Landmark" required 
-                        value={emergencyLocation} onChange={e => setEmergencyLocation(e.target.value)}
-                        style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
-                      />
-                      <select 
-                        required 
-                        value={emergencyProblem} onChange={e => setEmergencyProblem(e.target.value)}
-                        style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)', color: emergencyProblem ? 'var(--text-main)' : 'var(--text-muted)' }}
-                      >
-                        <option value="" disabled>{t('issue_placeholder')}</option>
-                        <option value="Engine won't start">{t("Engine won't start")}</option>
-                        <option value="Flat tire">{t("Flat tire")}</option>
-                        <option value="Battery dead">{t("Battery dead")}</option>
-                        <option value="Brake problem">{t("Brake problem")}</option>
-                        <option value="Oil leak">{t("Oil leak")}</option>
-                        <option value="Overheating">{t("Overheating")}</option>
-                        <option value="Transmission issue">{t("Transmission issue")}</option>
-                        <option value="Accident / Body damage">{t("Accident / Body damage")}</option>
-                        <option value="Towing request">{t("Towing request")}</option>
-                        <option value="Car locked / Key issue">{t("Car locked / Key issue")}</option>
-                        <option value="Other">{t("Other")}</option>
-                      </select>
-                      {emergencyProblem === 'Other' && (
+                  
+                  {/* Tabs */}
+                  <div style={{ display: 'flex', background: 'var(--surface-color)', padding: '0.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-color)' }}>
+                    <button 
+                      onClick={() => setActiveTab('request')}
+                      style={{ flex: 1, padding: '0.75rem', borderRadius: '8px', border: 'none', background: activeTab === 'request' ? 'var(--surface-hover)' : 'transparent', color: activeTab === 'request' ? 'var(--primary-color)' : 'var(--text-muted)', fontWeight: activeTab === 'request' ? 'bold' : 'normal', cursor: 'pointer', transition: 'all 0.2s' }}
+                    >
+                      🚨 Request Rescue
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('track')}
+                      style={{ flex: 1, padding: '0.75rem', borderRadius: '8px', border: 'none', background: activeTab === 'track' ? 'var(--surface-hover)' : 'transparent', color: activeTab === 'track' ? 'var(--primary-color)' : 'var(--text-muted)', fontWeight: activeTab === 'track' ? 'bold' : 'normal', cursor: 'pointer', transition: 'all 0.2s' }}
+                    >
+                      📍 Track Job
+                    </button>
+                  </div>
+
+                  {activeTab === 'request' && (
+                    <div className="card glass" style={{ padding: '2rem', textAlign: 'left', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 10px 30px rgba(239, 68, 68, 0.1)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                        <div style={{ background: 'var(--danger-color)', color: 'white', padding: '0.5rem', borderRadius: '50%', display: 'flex' }}>🚨</div>
+                        <h3 style={{ margin: 0, color: 'var(--danger-color)' }}>{t('rescue_form_title')}</h3>
+                      </div>
+                      <p style={{ marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('rescue_form_desc')}</p>
+                      <form onSubmit={handleEmergencyRescue} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <input 
-                          type="text" placeholder={t('describe_issue')} required 
-                          onChange={e => setEmergencyProblem('Other: ' + e.target.value)}
+                          type="text" placeholder={t('name_placeholder')} required 
+                          value={emergencyName} onChange={e => setEmergencyName(e.target.value)}
                           style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
                         />
-                      )}
-                      <button type="submit" className="btn-primary" disabled={isRequesting} style={{ background: 'var(--danger-color)', width: '100%', padding: '1rem', borderRadius: '8px', fontWeight: 'bold' }}>
-                        {isRequesting ? t('locating') : t('request_rescue_btn')}
-                      </button>
-                    </form>
-                  </div>
+                        <input 
+                          type="text" placeholder={t('phone_placeholder')} required 
+                          value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value)}
+                          style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
+                        />
+                        <input 
+                          type="text" placeholder={t('vehicle_placeholder')} required 
+                          value={emergencyVehicle} onChange={e => setEmergencyVehicle(e.target.value)}
+                          style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
+                        />
+                        <input 
+                          type="text" placeholder={t('location_placeholder')} required 
+                          value={emergencyLocation} onChange={e => setEmergencyLocation(e.target.value)}
+                          style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
+                        />
+                        <select 
+                          required 
+                          value={emergencyProblem} onChange={e => setEmergencyProblem(e.target.value)}
+                          style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)', color: emergencyProblem ? 'var(--text-main)' : 'var(--text-muted)' }}
+                        >
+                          <option value="" disabled>{t('issue_placeholder')}</option>
+                          <option value="Engine won't start">{t("Engine won't start")}</option>
+                          <option value="Flat tire">{t("Flat tire")}</option>
+                          <option value="Battery dead">{t("Battery dead")}</option>
+                          <option value="Brake problem">{t("Brake problem")}</option>
+                          <option value="Oil leak">{t("Oil leak")}</option>
+                          <option value="Overheating">{t("Overheating")}</option>
+                          <option value="Transmission issue">{t("Transmission issue")}</option>
+                          <option value="Accident / Body damage">{t("Accident / Body damage")}</option>
+                          <option value="Towing request">{t("Towing request")}</option>
+                          <option value="Car locked / Key issue">{t("Car locked / Key issue")}</option>
+                          <option value="Other">{t("Other")}</option>
+                        </select>
+                        {emergencyProblem === 'Other' && (
+                          <input 
+                            type="text" placeholder={t('describe_issue')} required 
+                            onChange={e => setEmergencyProblem('Other: ' + e.target.value)}
+                            style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
+                          />
+                        )}
+                        <button type="submit" className="btn-primary" disabled={isRequesting} style={{ background: 'var(--danger-color)', width: '100%', padding: '1rem', borderRadius: '8px', fontWeight: 'bold' }}>
+                          {isRequesting ? 'Sending...' : t('request_rescue_btn')}
+                        </button>
+                      </form>
+                    </div>
+                  )}
+                  
+                  {activeTab === 'track' && (
+                    <div className="card glass" style={{ padding: '2.5rem 2rem', textAlign: 'center', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                      <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📍</div>
+                      <h3 style={{ marginBottom: '0.5rem', color: 'var(--primary-color)' }}>Track Your Job</h3>
+                      <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Enter the Tracking Number provided to you to see your assigned mechanic and status.</p>
+                      
+                      <form onSubmit={handleTrackExisting} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <input 
+                          type="text" placeholder="e.g. EMG-1234 or MNT-5678" required 
+                          value={manualToken} onChange={e => setManualToken(e.target.value)}
+                          style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)', fontSize: '1.1rem', textAlign: 'center', letterSpacing: '1px' }}
+                        />
+                        <button type="submit" className="btn-primary" style={{ padding: '1rem', borderRadius: '8px', fontWeight: 'bold' }}>
+                          Track Job
+                        </button>
+                      </form>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="card glass" style={{ width: '100%', maxWidth: '450px', padding: '2.5rem 2rem', textAlign: 'center', border: assignedMechanic ? '1px solid var(--accent-color)' : '1px solid var(--primary-color)' }}>
