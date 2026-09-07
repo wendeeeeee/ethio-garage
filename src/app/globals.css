@@ -1,15 +1,15 @@
 :root {
-  /* Color Palette - Light Mode */
-  --bg-color: #f8fafc;
+  /* Color Palette - Warm Light Mode */
+  --bg-color: #faf8f5;
   --surface-color: #ffffff;
-  --surface-hover: #f1f5f9;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
+  --surface-hover: #f3f0eb;
+  --text-main: #33302d;
+  --text-muted: #7a7369;
   --primary-color: #3b82f6;
   --primary-hover: #2563eb;
   --accent-color: #10b981;
   --accent-hover: #059669;
-  --border-color: #e2e8f0;
+  --border-color: #e8e4de;
   --danger-color: #ef4444;
   --warning-color: #f59e0b;
 
@@ -130,5 +130,39 @@ button {
   .glass {
     background: rgba(30, 41, 59, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Navbar Responsiveness */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: flex !important;
+  }
+  
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    padding-top: 1rem;
+    align-items: flex-start;
+  }
+  
+  .nav-links.open {
+    display: flex;
   }
 }
