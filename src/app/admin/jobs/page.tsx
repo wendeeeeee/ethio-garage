@@ -168,7 +168,7 @@ export default function ServiceJobsPage() {
       <div className="card" style={{ marginBottom: '2rem' }}>
         <h3>Create New Service Job</h3>
         <form onSubmit={createJob} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
             <input 
               type="text" 
               placeholder="Job Number" 
@@ -216,7 +216,7 @@ export default function ServiceJobsPage() {
           </div>
 
           {/* Customer & Vehicle Link */}
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <select
               value={selectedCustomerIndex}
               onChange={e => {
@@ -257,7 +257,7 @@ export default function ServiceJobsPage() {
               ))}
             </select>
           </div>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
             <input 
               type="text" placeholder="License Plate Number (Required)" required 
               value={newJob.plate_number} onChange={e => setNewJob({...newJob, plate_number: e.target.value})}
@@ -274,8 +274,8 @@ export default function ServiceJobsPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
-             <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+             <div style={{ flex: '1 1 200px' }}>
                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Assign Mechanic</label>
                <select 
                   value={newJob.mechanic_id}
@@ -296,7 +296,8 @@ export default function ServiceJobsPage() {
       <div className="card">
         <h3>Active Jobs</h3>
         {loading ? <p>Loading...</p> : (
-          <table style={{ width: '100%', marginTop: '1rem', borderCollapse: 'collapse' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', marginTop: '1rem', borderCollapse: 'collapse', minWidth: '700px' }}>
             <thead>
               <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>
                 <th style={{ padding: '0.75rem' }}>Job #</th>
@@ -380,6 +381,7 @@ export default function ServiceJobsPage() {
               )}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 
