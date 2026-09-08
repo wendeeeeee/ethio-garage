@@ -24,6 +24,7 @@ export default function ServiceJobsPage() {
   // New selections for dropdowns
   const [selectedCustomerIndex, setSelectedCustomerIndex] = useState<number | ''>('');
   const [selectedVehicleMakeModel, setSelectedVehicleMakeModel] = useState<string>('');
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   const commonProblems = [
     'Engine won\'t start',
@@ -332,10 +333,10 @@ export default function ServiceJobsPage() {
                             cleanProblem
                           )}
                           {photoUrl && (
-                            <a href={photoUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', marginTop: '0.5rem' }}>
+                            <div onClick={() => setSelectedPhoto(photoUrl)} style={{ display: 'block', marginTop: '0.5rem', cursor: 'pointer' }}>
                               <img src={photoUrl} alt="Attached" style={{ maxHeight: '60px', borderRadius: '4px', border: '1px solid var(--border-color)', objectFit: 'cover' }} />
                               <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--primary-color)' }}>📷 View Photo</span>
-                            </a>
+                            </div>
                           )}
                         </>
                       );
@@ -462,6 +463,15 @@ export default function ServiceJobsPage() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {selectedPhoto && (
+        <div 
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000 }}
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <img src={selectedPhoto} alt="Full size" style={{ maxWidth: '90%', maxHeight: '90%', borderRadius: '8px' }} />
         </div>
       )}
     </div>

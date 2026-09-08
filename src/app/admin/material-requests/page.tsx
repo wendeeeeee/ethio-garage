@@ -16,6 +16,7 @@ interface Job {
 export default function MaterialRequestsAdminPage() {
   const [requests, setRequests] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
 
   useEffect(() => {
     fetchRequests();
@@ -108,10 +109,10 @@ export default function MaterialRequestsAdminPage() {
                             </span>
                           ))}
                           {photoUrl && (
-                            <a href={photoUrl} target="_blank" rel="noopener noreferrer" style={{ marginTop: '0.5rem', display: 'inline-block' }}>
+                            <div onClick={() => setSelectedPhoto(photoUrl)} style={{ marginTop: '0.5rem', display: 'inline-block', cursor: 'pointer' }}>
                               <img src={photoUrl} alt="Attached" style={{ maxHeight: '80px', borderRadius: '6px', border: '2px solid var(--border-color)', objectFit: 'cover' }} />
                               <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary-color)', marginTop: '0.25rem' }}>📷 View Full Photo</span>
-                            </a>
+                            </div>
                           )}
                         </div>
                       </td>
@@ -165,6 +166,15 @@ export default function MaterialRequestsAdminPage() {
           </div>
         )}
       </div>
+
+      {selectedPhoto && (
+        <div 
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000 }}
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <img src={selectedPhoto} alt="Full size" style={{ maxWidth: '90%', maxHeight: '90%', borderRadius: '8px' }} />
+        </div>
+      )}
     </div>
   );
 }
