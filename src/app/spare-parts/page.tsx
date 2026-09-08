@@ -27,6 +27,8 @@ export default function SparePartsPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   
+
+  
   // Pagination state
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -65,6 +67,8 @@ export default function SparePartsPage() {
   };
 
   const totalPages = Math.ceil(totalCount / pageSize);
+
+
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -163,9 +167,19 @@ export default function SparePartsPage() {
                 ))}
                 
                 {parts.length === 0 && (searchQuery.length >= 2 || selectedCategory !== 'All') && (
-                  <p style={{ color: 'var(--text-muted)', marginTop: '3rem', fontSize: '1.1rem' }}>
-                    {t('no_parts_found')} {searchQuery ? `"${searchQuery}"` : selectedCategory}. {t('call_to_order')}
-                  </p>
+                  <div style={{ marginTop: '3rem', textAlign: 'center' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '1rem' }}>
+                      {t('no_parts_found')} {searchQuery ? `"${searchQuery}"` : selectedCategory}.
+                    </p>
+                    <Link href="/request-part">
+                      <button 
+                        className="btn-primary" 
+                        style={{ padding: '0.75rem 2rem', borderRadius: '999px', fontSize: '1rem' }}
+                      >
+                        {t('request_material')}
+                      </button>
+                    </Link>
+                  </div>
                 )}
               </div>
 

@@ -88,6 +88,16 @@ const translations: Translations = {
   no_parts_found: { en: 'No parts found for', am: 'ለዚህ የተገኘ መለዋወጫ የለም፡' },
   call_to_order: { en: 'Call us to order it!', am: 'ለማዘዝ ይደውሉልን!' },
 
+  // Missing Material Request
+  request_material: { en: 'Request Missing Part', am: 'የጎደለ መለዋወጫ ይጠይቁ' },
+  request_material_desc: { en: 'Can\'t find what you are looking for? Request it and we will find it for you.', am: 'የሚፈልጉትን አላገኙም? ይጠይቁን እና እንፈልግልዎታለን።' },
+  part_name_placeholder: { en: 'Part Name & Description', am: 'የመለዋወጫው ስም እና መግለጫ' },
+  brand_preference: { en: 'Preferred Brand (Optional)', am: 'የሚመርጡት ብራንድ (አማራጭ)' },
+  request_btn: { en: 'Submit Request', am: 'ጥያቄውን ላክ' },
+  request_success: { en: '✅ Request submitted successfully! We will contact you soon.', am: '✅ ጥያቄዎ በተሳካ ሁኔታ ተልኳል! በቅርቡ እናገኝዎታለን።' },
+  request_fail: { en: 'Failed to submit request. Please call us.', am: 'ጥያቄ መላክ አልተቻለም። እባክዎ ይደውሉልን።' },
+  cancel_btn: { en: 'Cancel', am: 'ሰርዝ' },
+
   // Maintenance Page
   schedule_title: { en: 'Schedule Maintenance', am: 'የጥገና ቀጠሮ' },
   schedule_subtitle: { en: 'Keep your vehicle in top condition. Book your service below.', am: 'መኪናዎን በጥሩ ሁኔታ ያቆዩት። አገልግሎትዎን ከዚህ በታች ይመዝገቡ።' },
