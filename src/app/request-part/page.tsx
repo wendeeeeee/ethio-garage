@@ -13,13 +13,31 @@ export default function RequestPartPage() {
   const [reqVehicle, setReqVehicle] = useState('');
   const [reqName, setReqName] = useState('');
   const [reqPhone, setReqPhone] = useState('');
+  const [partPhoto, setPartPhoto] = useState<File | null>(null);
+  const [partPhotoPreview, setPartPhotoPreview] = useState<string | null>(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   const handleMaterialRequest = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsRequesting(true);
 
     const jobNum = 'MAT-' + Math.floor(Math.random() * 10000);
-    const problemStr = `Material Request: ${reqPartName} | Brand: ${reqBrand || 'Any'} | Vehicle: ${reqVehicle} | From: ${reqName} (${reqPhone})`;
+
+    // Upload photo if provided
+    let photoUrl = '';
+    if (partPhoto) {
+      setUploadingPhoto(true);
+      const fileExt = partPhoto.name.split('.').pop();
+      const filePath = `parts/${jobNum}-${Date.now()}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage.from('uploads').upload(filePath, partPhoto);
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(filePath);
+        photoUrl = urlData.publicUrl;
+      }
+      setUploadingPhoto(false);
+    }
+
+    const problemStr = `Material Request: ${reqPartName} | Brand: ${reqBrand || 'Any'} | Vehicle: ${reqVehicle} | From: ${reqName} (${reqPhone})${photoUrl ? ' | Photo: ' + photoUrl : ''}`;
 
     const { error } = await supabase.from('jobs').insert([{
       job_number: jobNum,
@@ -35,6 +53,8 @@ export default function RequestPartPage() {
       setReqVehicle('');
       setReqName('');
       setReqPhone('');
+      setPartPhoto(null);
+      setPartPhotoPreview(null);
     } else {
       alert(t('request_fail'));
     }
@@ -93,9 +113,32 @@ export default function RequestPartPage() {
                 />
               </div>
               
+              {/* Photo Upload */}
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('upload_photo')}</label>
+                <div style={{ border: '2px dashed var(--border-color)', borderRadius: '12px', padding: '1.5rem', textAlign: 'center', background: 'var(--surface-hover)', cursor: 'pointer', transition: 'border-color 0.2s' }}>
+                  <label style={{ cursor: 'pointer', display: 'block' }}>
+                    {partPhotoPreview ? (
+                      <div style={{ position: 'relative', display: 'inline-block' }}>
+                        <img src={partPhotoPreview} alt="Preview" style={{ maxHeight: '150px', borderRadius: '8px', objectFit: 'cover' }} />
+                        <p style={{ margin: '0.5rem 0 0', color: 'var(--accent-color)', fontWeight: 600, fontSize: '0.9rem' }}>{t('photo_attached')}</p>
+                        <button type="button" onClick={(ev) => { ev.preventDefault(); setPartPhoto(null); setPartPhotoPreview(null); }} style={{ position: 'absolute', top: '-8px', right: '-8px', background: 'var(--danger-color)', color: 'white', border: 'none', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }}>✕</button>
+                      </div>
+                    ) : (
+                      <>
+                        <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📷</div>
+                        <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-main)', fontSize: '1.05rem' }}>{t('upload_photo_part')}</p>
+                        <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('photo_optional')}</p>
+                      </>
+                    )}
+                    <input type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={e => { const file = e.target.files?.[0]; if (file) { setPartPhoto(file); setPartPhotoPreview(URL.createObjectURL(file)); } }} />
+                  </label>
+                </div>
+              </div>
+
               <div style={{ gridColumn: '1 / -1', marginTop: '1rem' }}>
-                <button type="submit" className="btn-primary" disabled={isRequesting} style={{ width: '100%', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem' }}>
-                  {isRequesting ? '...' : t('request_btn')}
+                <button type="submit" className="btn-primary" disabled={isRequesting || uploadingPhoto} style={{ width: '100%', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem' }}>
+                  {uploadingPhoto ? t('uploading_photo') : isRequesting ? '...' : t('request_btn')}
                 </button>
               </div>
             </form>

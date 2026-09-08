@@ -89,8 +89,11 @@ export default function MaterialRequestsAdminPage() {
               <tbody>
                 {requests.map(req => {
                   // Parse the problem string which is format:
-                  // "Material Request: [PartName] | Brand: [Brand] | Vehicle: [Vehicle] | From: [Name] ([Phone])"
-                  const detailsParts = req.problem.replace('Material Request: ', '').split(' | ');
+                  // "Material Request: [PartName] | Brand: [Brand] | Vehicle: [Vehicle] | From: [Name] ([Phone]) | Photo: [URL]"
+                  const allParts = req.problem.replace('Material Request: ', '').replace('SOS: ', '').split(' | ');
+                  const photoPart = allParts.find(p => p.startsWith('Photo: '));
+                  const photoUrl = photoPart ? photoPart.replace('Photo: ', '') : null;
+                  const detailsParts = allParts.filter(p => !p.startsWith('Photo: '));
                   
                   return (
                     <tr key={req.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
@@ -104,6 +107,12 @@ export default function MaterialRequestsAdminPage() {
                               {part}
                             </span>
                           ))}
+                          {photoUrl && (
+                            <a href={photoUrl} target="_blank" rel="noopener noreferrer" style={{ marginTop: '0.5rem', display: 'inline-block' }}>
+                              <img src={photoUrl} alt="Attached" style={{ maxHeight: '80px', borderRadius: '6px', border: '2px solid var(--border-color)', objectFit: 'cover' }} />
+                              <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary-color)', marginTop: '0.25rem' }}>📷 View Full Photo</span>
+                            </a>
+                          )}
                         </div>
                       </td>
                       <td style={{ padding: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>

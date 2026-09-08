@@ -17,6 +17,9 @@ export default function Home() {
   const [emergencyVehicle, setEmergencyVehicle] = useState('');
   const [emergencyProblem, setEmergencyProblem] = useState('');
   const [emergencyLocation, setEmergencyLocation] = useState('');
+  const [emergencyPhoto, setEmergencyPhoto] = useState<File | null>(null);
+  const [emergencyPhotoPreview, setEmergencyPhotoPreview] = useState<string | null>(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   
   // Tracking State
   const [trackingJobId, setTrackingJobId] = useState<string | null>(null);
@@ -76,9 +79,25 @@ export default function Home() {
 
     const jobNum = 'EMG-' + Math.floor(Math.random() * 10000);
 
+    // Upload photo if provided
+    let photoUrl = '';
+    if (emergencyPhoto) {
+      setUploadingPhoto(true);
+      const fileExt = emergencyPhoto.name.split('.').pop();
+      const filePath = `rescue/${jobNum}-${Date.now()}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage.from('uploads').upload(filePath, emergencyPhoto);
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(filePath);
+        photoUrl = urlData.publicUrl;
+      }
+      setUploadingPhoto(false);
+    }
+
+    const problemStr = `SOS: ${emergencyProblem} | Vehicle: ${emergencyVehicle} | From: ${emergencyName} (${emergencyPhone})${photoUrl ? ' | Photo: ' + photoUrl : ''}`;
+
     const { data, error } = await supabase.from('jobs').insert([{
       job_number: jobNum,
-      problem: `SOS: ${emergencyProblem} | Vehicle: ${emergencyVehicle} | From: ${emergencyName} (${emergencyPhone})`,
+      problem: problemStr,
       location: emergencyLocation,
       status: 'PENDING_DISPATCH'
     }]).select();
@@ -194,8 +213,29 @@ export default function Home() {
                             style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
                           />
                         )}
-                        <button type="submit" className="btn-primary" disabled={isRequesting} style={{ background: 'var(--danger-color)', width: '100%', padding: '1rem', borderRadius: '8px', fontWeight: 'bold' }}>
-                          {isRequesting ? t('sending') : t('request_rescue_btn')}
+
+                        {/* Photo Upload */}
+                        <div style={{ border: '2px dashed var(--border-color)', borderRadius: '8px', padding: '1rem', textAlign: 'center', background: 'var(--surface-hover)' }}>
+                          <label style={{ cursor: 'pointer', display: 'block' }}>
+                            {emergencyPhotoPreview ? (
+                              <div style={{ position: 'relative' }}>
+                                <img src={emergencyPhotoPreview} alt="Preview" style={{ maxHeight: '120px', borderRadius: '8px', objectFit: 'cover' }} />
+                                <p style={{ margin: '0.5rem 0 0', color: 'var(--accent-color)', fontWeight: 600, fontSize: '0.85rem' }}>{t('photo_attached')}</p>
+                                <button type="button" onClick={(ev) => { ev.preventDefault(); setEmergencyPhoto(null); setEmergencyPhotoPreview(null); }} style={{ position: 'absolute', top: '4px', right: '4px', background: 'var(--danger-color)', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.7rem' }}>✕</button>
+                              </div>
+                            ) : (
+                              <>
+                                <div style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>📷</div>
+                                <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-main)' }}>{t('upload_photo_rescue')}</p>
+                                <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('photo_optional')}</p>
+                              </>
+                            )}
+                            <input type="file" accept="image/*" capture="environment" style={{ display: 'none' }} onChange={e => { const file = e.target.files?.[0]; if (file) { setEmergencyPhoto(file); setEmergencyPhotoPreview(URL.createObjectURL(file)); } }} />
+                          </label>
+                        </div>
+
+                        <button type="submit" className="btn-primary" disabled={isRequesting || uploadingPhoto} style={{ background: 'var(--danger-color)', width: '100%', padding: '1rem', borderRadius: '8px', fontWeight: 'bold' }}>
+                          {uploadingPhoto ? t('uploading_photo') : isRequesting ? t('sending') : t('request_rescue_btn')}
                         </button>
                       </form>
                     </div>

@@ -98,6 +98,15 @@ const translations: Translations = {
   request_fail: { en: 'Failed to submit request. Please call us.', am: 'ጥያቄ መላክ አልተቻለም። እባክዎ ይደውሉልን።' },
   cancel_btn: { en: 'Cancel', am: 'ሰርዝ' },
 
+  // Photo Upload
+  upload_photo: { en: 'Upload Vehicle/Part Photo 📷', am: 'የመኪና/መለዋወጫ ፎቶ ያስገቡ 📷' },
+  upload_photo_rescue: { en: 'Upload a photo of the vehicle or problem', am: 'የመኪናው ወይም የችግሩ ፎቶ ያስገቡ' },
+  upload_photo_part: { en: 'Upload a photo of the spare part you need', am: 'የሚፈልጉት መለዋወጫ ፎቶ ያስገቡ' },
+  uploading_photo: { en: 'Uploading photo...', am: 'ፎቶ በማስገባት ላይ...' },
+  photo_attached: { en: '✅ Photo attached', am: '✅ ፎቶ ተያይዟል' },
+  remove_photo: { en: 'Remove', am: 'አስወግድ' },
+  photo_optional: { en: '(Optional - helps us understand better)', am: '(አማራጭ - ለማስተዋል ይረዳናል)' },
+
   // Maintenance Page
   schedule_title: { en: 'Schedule Maintenance', am: 'የጥገና ቀጠሮ' },
   schedule_subtitle: { en: 'Keep your vehicle in top condition. Book your service below.', am: 'መኪናዎን በጥሩ ሁኔታ ያቆዩት። አገልግሎትዎን ከዚህ በታች ይመዝገቡ።' },
