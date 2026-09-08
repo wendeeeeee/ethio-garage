@@ -23,17 +23,17 @@ export default function RequestPartPage() {
 
     const jobNum = 'MAT-' + Math.floor(Math.random() * 10000);
 
-    // Upload photo if provided
     let photoUrl = '';
     if (partPhoto) {
       setUploadingPhoto(true);
-      const fileExt = partPhoto.name.split('.').pop();
-      const filePath = `parts/${jobNum}-${Date.now()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage.from('uploads').upload(filePath, partPhoto);
-      if (!uploadError) {
-        const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(filePath);
-        photoUrl = urlData.publicUrl;
-      }
+      
+      // Convert to Base64 to bypass Supabase Storage bucket requirements
+      photoUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(partPhoto);
+      });
+      
       setUploadingPhoto(false);
     }
 

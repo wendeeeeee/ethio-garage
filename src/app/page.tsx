@@ -79,17 +79,17 @@ export default function Home() {
 
     const jobNum = 'EMG-' + Math.floor(Math.random() * 10000);
 
-    // Upload photo if provided
     let photoUrl = '';
     if (emergencyPhoto) {
       setUploadingPhoto(true);
-      const fileExt = emergencyPhoto.name.split('.').pop();
-      const filePath = `rescue/${jobNum}-${Date.now()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage.from('uploads').upload(filePath, emergencyPhoto);
-      if (!uploadError) {
-        const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(filePath);
-        photoUrl = urlData.publicUrl;
-      }
+      
+      // Convert to Base64 to bypass Supabase Storage bucket requirements
+      photoUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(emergencyPhoto);
+      });
+      
       setUploadingPhoto(false);
     }
 
