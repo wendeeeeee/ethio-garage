@@ -277,6 +277,15 @@ export default function Home() {
               </div>
             </Link>
 
+            <Link href="/request-part" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--accent-color)' }}>
+                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📦</div>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t('request_material')}</h3>
+                <p style={{ color: 'var(--text-muted)' }}>{t('request_material_desc')}</p>
+                <div style={{ marginTop: '1.5rem', color: 'var(--accent-color)', fontWeight: 'bold' }}>{t('request_btn')} &rarr;</div>
+              </div>
+            </Link>
+
             <Link href="/services" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📋</div>

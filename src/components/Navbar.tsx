@@ -14,6 +14,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: t('home') },
     { href: '/spare-parts', label: t('spare_parts') },
+    { href: '/request-part', label: t('request_material') },
     { href: '/services', label: t('services') },
     { href: '/maintenance', label: t('book_maintenance') },
   ];
