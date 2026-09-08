@@ -66,7 +66,8 @@ export default function ServiceJobsPage() {
     const interval = setInterval(async () => {
       const { data } = await supabase.from('jobs').select('*').order('created_at', { ascending: false });
       if (data) {
-        setJobs(data);
+        const serviceJobs = data.filter(j => !j.job_number.startsWith('MAT-'));
+        setJobs(serviceJobs);
         // Look for any unassigned SOS jobs that we haven't notified about yet
         const unassignedSos = data.find(j => j.status === 'PENDING_DISPATCH' && j.problem.startsWith('SOS:'));
         if (unassignedSos) {
@@ -99,7 +100,9 @@ export default function ServiceJobsPage() {
   async function fetchJobs() {
     setLoading(true);
     const { data } = await supabase.from('jobs').select('*').order('created_at', { ascending: false });
-    if (data) setJobs(data);
+    if (data) {
+      setJobs(data.filter(j => !j.job_number.startsWith('MAT-')));
+    }
     setLoading(false);
   }
 
