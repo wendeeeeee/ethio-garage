@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home, Wrench, Package, Briefcase, CalendarClock, CarFront, ShieldCheck, Globe } from 'lucide-react';
 
 export default function Navbar() {
   const { t, language, toggleLanguage } = useLanguage();
@@ -12,11 +12,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { href: '/', label: t('home') },
-    { href: '/spare-parts', label: t('spare_parts') },
-    { href: '/request-part', label: t('request_material') },
-    { href: '/services', label: t('services') },
-    { href: '/maintenance', label: t('book_maintenance') },
+    { href: '/', label: t('home'), icon: <Home size={18} /> },
+    { href: '/spare-parts', label: t('spare_parts'), icon: <Wrench size={18} /> },
+    { href: '/request-part', label: t('request_material'), icon: <Package size={18} /> },
+    { href: '/services', label: t('services'), icon: <Briefcase size={18} /> },
+    { href: '/maintenance', label: t('book_maintenance'), icon: <CalendarClock size={18} /> },
   ];
 
   return (
@@ -35,11 +35,12 @@ export default function Navbar() {
           onClick={toggleLanguage}
           style={{ 
             background: 'var(--text-main)', color: 'var(--bg-color)', 
-            border: 'none', padding: '0.3rem 0.6rem', borderRadius: '999px', 
-            cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem'
+            border: 'none', padding: '0.4rem 0.6rem', borderRadius: '999px', 
+            cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem',
+            display: 'flex', alignItems: 'center', gap: '0.3rem'
           }}
         >
-          🌍 {language === 'en' ? 'አማ' : 'EN'}
+          <Globe size={14} /> {language === 'en' ? 'አማ' : 'EN'}
         </button>
         <button onClick={() => setIsOpen(!isOpen)} style={{ background: 'none', border: 'none', color: 'var(--text-main)', cursor: 'pointer' }}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -55,6 +56,9 @@ export default function Navbar() {
               key={link.href} 
               href={link.href}
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
                 color: isActive ? 'var(--primary-color)' : 'var(--text-main)',
                 fontWeight: isActive ? 700 : 500,
                 borderBottom: isActive ? '2px solid var(--primary-color)' : '2px solid transparent',
@@ -64,6 +68,7 @@ export default function Navbar() {
               }}
               onClick={() => setIsOpen(false)}
             >
+              {link.icon}
               {link.label}
             </Link>
           );
@@ -73,6 +78,9 @@ export default function Navbar() {
           href="/cars" 
           onClick={() => setIsOpen(false)}
           style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
             color: pathname === '/cars' ? 'var(--primary-color)' : 'var(--accent-color)', 
             fontWeight: pathname === '/cars' ? 700 : 600,
             borderBottom: pathname === '/cars' ? '2px solid var(--primary-color)' : '2px solid transparent',
@@ -80,7 +88,7 @@ export default function Navbar() {
             textDecoration: 'none'
           }}
         >
-          🚗 {t('cars_for_sale')}
+          <CarFront size={18} /> {t('cars_for_sale')}
         </Link>
 
         <button 
@@ -92,9 +100,10 @@ export default function Navbar() {
             cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem'
           }}
         >
-          🌍 {language === 'en' ? 'አማ' : 'EN'}
+          <Globe size={16} /> {language === 'en' ? 'አማ' : 'EN'}
         </button>
-        <Link href="/admin" onClick={() => setIsOpen(false)} className="btn-primary" style={{ padding: '0.4rem 1rem', borderRadius: '999px', fontSize: '0.875rem', textDecoration: 'none' }}>
+        <Link href="/admin" onClick={() => setIsOpen(false)} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 1rem', borderRadius: '999px', fontSize: '0.875rem', textDecoration: 'none' }}>
+          <ShieldCheck size={16} />
           {t('admin')}
         </Link>
       </nav>

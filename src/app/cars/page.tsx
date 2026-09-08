@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { CarFront, Car, Fuel, Cog, Ruler, Palette, Phone } from 'lucide-react';
 
 interface CarListing {
   id: string;
@@ -80,8 +81,9 @@ export default function CarsForSalePage() {
         <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '400px', height: '400px', background: 'var(--primary-color)', filter: 'blur(150px)', opacity: 0.08, zIndex: 0 }}></div>
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '700px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '3.5rem', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
-            🚗 {t('cars_for_sale').split(' ')[0]} <span style={{ color: 'var(--primary-color)' }}>{t('cars_for_sale').split(' ').slice(1).join(' ')}</span>
+          <h1 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', fontSize: '3.5rem', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+            <CarFront size={48} /> 
+            <div>{t('cars_for_sale').split(' ')[0]} <span style={{ color: 'var(--primary-color)' }}>{t('cars_for_sale').split(' ').slice(1).join(' ')}</span></div>
           </h1>
           <p style={{ fontSize: '1.15rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>
             {t('cars_for_sale_subtitle')}
@@ -109,7 +111,7 @@ export default function CarsForSalePage() {
           <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '3rem 0' }}>Loading listings...</p>
         ) : filteredCars.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🚘</div>
+            <div style={{ color: 'var(--text-main)', marginBottom: '1rem' }}><Car size={64} /></div>
             <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>{t('bringing_new_cars')}</p>
           </div>
         ) : (
@@ -134,7 +136,7 @@ export default function CarsForSalePage() {
                     {car.image_url ? (
                       <img src={car.image_url} alt={`${car.make} ${car.model}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
-                      <div style={{ fontSize: '4rem' }}>🚗</div>
+                      <div style={{ color: 'var(--bg-color)' }}><CarFront size={64} /></div>
                     )}
                     <div style={{
                       position: 'absolute', top: '0.75rem', right: '0.75rem',
@@ -160,23 +162,23 @@ export default function CarsForSalePage() {
                     {/* Tags */}
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                       {car.fuel_type && (
-                        <span style={{ background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                          ⛽ {car.fuel_type}
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          <Fuel size={14} /> {car.fuel_type}
                         </span>
                       )}
                       {car.transmission && (
-                        <span style={{ background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                          ⚙️ {car.transmission}
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          <Cog size={14} /> {car.transmission}
                         </span>
                       )}
                       {car.mileage && (
-                        <span style={{ background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                          📏 {car.mileage} km
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          <Ruler size={14} /> {car.mileage} km
                         </span>
                       )}
                       {car.color && (
-                        <span style={{ background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                          🎨 {car.color}
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--surface-hover)', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          <Palette size={14} /> {car.color}
                         </span>
                       )}
                     </div>
@@ -197,9 +199,9 @@ export default function CarsForSalePage() {
                         <strong>{car.contact_name}</strong>
                       </div>
                       <a href={`tel:${car.contact_phone}`} className="btn-primary" style={{
-                        padding: '0.5rem 1.25rem', borderRadius: '999px', fontSize: '0.875rem'
+                        display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.5rem 1.25rem', borderRadius: '999px', fontSize: '0.875rem'
                       }}>
-                        📞 Call
+                        <Phone size={16} /> Call
                       </a>
                     </div>
                   </div>

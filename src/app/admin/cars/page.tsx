@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Camera, Car, DollarSign, Phone, Rocket } from 'lucide-react';
 
 export default function PostCarPage() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function PostCarPage() {
     contact_name: '',
     contact_phone: ''
   });
+  const [phoneError, setPhoneError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -40,6 +42,10 @@ export default function PostCarPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (form.contact_phone.length !== 10) {
+      setPhoneError('Phone number must be exactly 10 digits');
+      return;
+    }
     setIsSubmitting(true);
 
     let imageUrl = null;
@@ -108,7 +114,7 @@ export default function PostCarPage() {
           {/* Car Photo Card */}
           <div className="card" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              📷 Car Photo
+              <Camera size={20} /> Car Photo
             </h3>
             <div
               style={{
@@ -137,7 +143,7 @@ export default function PostCarPage() {
                 />
               ) : (
                 <div>
-                  <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>📸</div>
+                  <div style={{ color: 'var(--text-muted)', marginBottom: '0.75rem' }}><Camera size={48} /></div>
                   <p style={{ color: 'var(--text-muted)', fontWeight: 500 }}>Click to upload a photo of your car</p>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.25rem' }}>JPG, PNG up to 5MB</p>
                 </div>
@@ -167,7 +173,7 @@ export default function PostCarPage() {
           {/* Car Details Card */}
           <div className="card" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              🚗 Car Details
+              <Car size={20} /> Car Details
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
@@ -212,7 +218,7 @@ export default function PostCarPage() {
           {/* Pricing & Description Card */}
           <div className="card" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              💰 Price & Description
+              <DollarSign size={20} /> Price & Description
             </h3>
             <div style={{ marginBottom: '1rem' }}>
               <label style={labelStyle}>Price (ETB) *</label>
@@ -234,7 +240,7 @@ export default function PostCarPage() {
           {/* Contact Card */}
           <div className="card" style={{ padding: '2rem' }}>
             <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              📞 Your Contact Info
+              <Phone size={20} /> Your Contact Info
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
@@ -248,20 +254,30 @@ export default function PostCarPage() {
                   type="tel"
                   required 
                   placeholder="e.g. 0911234567 (10 digits)" 
-                  pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
+                  maxLength={10}
                   value={form.contact_phone} 
-                  onChange={e => handleChange({ ...e, target: { ...e.target, name: e.target.name, value: e.target.value.replace(/\D/g, '') } } as React.ChangeEvent<HTMLInputElement>)} 
-                  style={inputStyle} 
+                  onChange={e => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    handleChange({ ...e, target: { ...e.target, name: e.target.name, value: val } } as React.ChangeEvent<HTMLInputElement>);
+                    if (val.length > 0 && val.length !== 10) {
+                      setPhoneError('Phone number must be exactly 10 digits');
+                    } else {
+                      setPhoneError('');
+                    }
+                  }} 
+                  style={{ ...inputStyle, border: `1px solid ${phoneError ? 'var(--danger-color)' : 'var(--border-color)'}` }} 
                 />
+                {phoneError && <span style={{ color: 'var(--danger-color)', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>{phoneError}</span>}
               </div>
             </div>
           </div>
 
           <button type="submit" className="btn-primary" disabled={isSubmitting} style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
             width: '100%', padding: '1.1rem', fontSize: '1.1rem', borderRadius: '12px',
             fontWeight: 700, marginTop: '0.5rem'
           }}>
-            {isSubmitting ? 'Posting...' : '🚀 Post Car for Sale'}
+            {isSubmitting ? 'Posting...' : <><Rocket size={20} /> Post Car for Sale</>}
           </button>
         </form>
       </section>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Camera, Package } from 'lucide-react';
 
 export default function RequestPartPage() {
   const { t } = useLanguage();
@@ -143,7 +144,7 @@ export default function RequestPartPage() {
                       </div>
                     ) : (
                       <>
-                        <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📷</div>
+                        <div style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}><Camera size={48} /></div>
                         <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-main)', fontSize: '1.05rem' }}>{t('upload_photo_part')}</p>
                         <p style={{ margin: '0.25rem 0 0', fontSize: '0.85rem', color: 'var(--text-muted)' }}>{t('photo_optional')}</p>
                       </>
@@ -154,8 +155,8 @@ export default function RequestPartPage() {
               </div>
 
               <div style={{ gridColumn: '1 / -1', marginTop: '1rem' }}>
-                <button type="submit" className="btn-primary" disabled={isRequesting || uploadingPhoto} style={{ width: '100%', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem' }}>
-                  {uploadingPhoto ? t('uploading_photo') : isRequesting ? '...' : t('request_btn')}
+                <button type="submit" className="btn-primary" disabled={isRequesting || uploadingPhoto} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem' }}>
+                  {uploadingPhoto ? t('uploading_photo') : isRequesting ? '...' : <><Package size={20} /> {t('request_btn')}</>}
                 </button>
               </div>
             </form>

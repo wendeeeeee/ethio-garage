@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Package, Droplet, Disc, Filter, Battery, Circle, Zap, Settings, Car, ClipboardList } from 'lucide-react';
+import { Package, Droplet, Disc, Filter, Battery, Circle, Zap, Settings, Car, ClipboardList, ArrowRight, Search } from 'lucide-react';
 
 const CATEGORIES = [
   { key: 'All', icon: <Package size={16} strokeWidth={2.5} />, en: 'All Categories', am: 'ሁሉም' },
@@ -85,8 +85,8 @@ export default function SparePartsPage() {
           
           <div style={{ marginBottom: '2rem' }}>
             <Link href="/request-part">
-              <button className="btn-primary" style={{ padding: '0.75rem 2rem', borderRadius: '999px', fontSize: '1rem', background: 'var(--surface-color)', color: 'var(--primary-color)', border: '2px solid var(--primary-color)' }}>
-                {t('request_material')} &rarr;
+              <button className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', borderRadius: '999px', fontSize: '1rem', background: 'var(--surface-color)', color: 'var(--primary-color)', border: '2px solid var(--primary-color)' }}>
+                {t('request_material')} <ArrowRight size={16} />
               </button>
             </Link>
           </div>
@@ -140,8 +140,8 @@ export default function SparePartsPage() {
               }}
             />
             
-            <button type="submit" className="btn-primary" style={{ width: '20%', padding: '0', borderRadius: '0 999px 999px 0', fontSize: '1.05rem', fontWeight: 'bold' }}>
-              {t('search_btn')}
+            <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '20%', padding: '0', borderRadius: '0 999px 999px 0', fontSize: '1.05rem', fontWeight: 'bold' }}>
+              <Search size={18} /> {t('search_btn')}
             </button>
           </form>
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import styles from '../admin.module.css';
+import { Plus } from 'lucide-react';
 
 interface Mechanic {
   id: string;
@@ -16,6 +17,7 @@ export default function MechanicsPage() {
   const [mechanics, setMechanics] = useState<Mechanic[]>([]);
   const [loading, setLoading] = useState(true);
   const [newMechanic, setNewMechanic] = useState({ name: '', phone: '', skill: '' });
+  const [phoneError, setPhoneError] = useState('');
 
   useEffect(() => {
     fetchMechanics();
@@ -30,6 +32,10 @@ export default function MechanicsPage() {
 
   async function addMechanic(e: React.FormEvent) {
     e.preventDefault();
+    if (newMechanic.phone.length !== 10) {
+      setPhoneError('Phone number must be exactly 10 digits');
+      return;
+    }
     const { error } = await supabase.from('mechanics').insert([newMechanic]);
     if (!error) {
       setNewMechanic({ name: '', phone: '', skill: '' });
@@ -54,15 +60,26 @@ export default function MechanicsPage() {
             onChange={e => setNewMechanic({...newMechanic, name: e.target.value})}
             style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
           />
-          <input 
-            type="tel" 
-            placeholder="Phone Number (10 digits)" 
-            required
-            pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
-            value={newMechanic.phone}
-            onChange={e => setNewMechanic({...newMechanic, phone: e.target.value.replace(/\D/g, '')})}
-            style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
-          />
+          <div>
+            <input 
+              type="tel" 
+              placeholder="Phone Number (10 digits)" 
+              required
+              maxLength={10}
+              value={newMechanic.phone}
+              onChange={e => {
+                const val = e.target.value.replace(/\D/g, '');
+                setNewMechanic({...newMechanic, phone: val});
+                if (val.length > 0 && val.length !== 10) {
+                  setPhoneError('Phone number must be exactly 10 digits');
+                } else {
+                  setPhoneError('');
+                }
+              }}
+              style={{ padding: '0.5rem', borderRadius: '4px', border: `1px solid ${phoneError ? 'var(--danger-color)' : 'var(--border-color)'}`, outline: 'none' }}
+            />
+            {phoneError && <span style={{ color: 'var(--danger-color)', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>{phoneError}</span>}
+          </div>
           <input 
             type="text" 
             placeholder="Skill (e.g., Electrician, Engine)" 
@@ -71,7 +88,9 @@ export default function MechanicsPage() {
             onChange={e => setNewMechanic({...newMechanic, skill: e.target.value})}
             style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
           />
-          <button type="submit" className="btn-primary">Add</button>
+          <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Plus size={16} /> Add
+          </button>
         </form>
       </div>
 

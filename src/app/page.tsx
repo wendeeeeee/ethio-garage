@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './page.module.css';
+import { AlertTriangle, MapPin, Camera, UserCog, Phone, Hourglass, Settings, Package, ClipboardList, CalendarClock, CarFront } from 'lucide-react';
 
 export default function Home() {
   const { t } = useLanguage();
@@ -154,22 +155,22 @@ export default function Home() {
                   <div style={{ display: 'flex', background: 'var(--surface-color)', padding: '0.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-color)' }}>
                     <button 
                       onClick={() => setActiveTab('request')}
-                      style={{ flex: 1, padding: '0.75rem', borderRadius: '8px', border: 'none', background: activeTab === 'request' ? 'var(--surface-hover)' : 'transparent', color: activeTab === 'request' ? 'var(--primary-color)' : 'var(--text-muted)', fontWeight: activeTab === 'request' ? 'bold' : 'normal', cursor: 'pointer', transition: 'all 0.2s' }}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: 1, padding: '0.75rem', borderRadius: '8px', border: 'none', background: activeTab === 'request' ? 'var(--surface-hover)' : 'transparent', color: activeTab === 'request' ? 'var(--primary-color)' : 'var(--text-muted)', fontWeight: activeTab === 'request' ? 'bold' : 'normal', cursor: 'pointer', transition: 'all 0.2s' }}
                     >
-                      🚨 {t('request_rescue_tab')}
+                      <AlertTriangle size={18} /> {t('request_rescue_tab')}
                     </button>
                     <button 
                       onClick={() => setActiveTab('track')}
-                      style={{ flex: 1, padding: '0.75rem', borderRadius: '8px', border: 'none', background: activeTab === 'track' ? 'var(--surface-hover)' : 'transparent', color: activeTab === 'track' ? 'var(--primary-color)' : 'var(--text-muted)', fontWeight: activeTab === 'track' ? 'bold' : 'normal', cursor: 'pointer', transition: 'all 0.2s' }}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flex: 1, padding: '0.75rem', borderRadius: '8px', border: 'none', background: activeTab === 'track' ? 'var(--surface-hover)' : 'transparent', color: activeTab === 'track' ? 'var(--primary-color)' : 'var(--text-muted)', fontWeight: activeTab === 'track' ? 'bold' : 'normal', cursor: 'pointer', transition: 'all 0.2s' }}
                     >
-                      📍 {t('track_job_tab')}
+                      <MapPin size={18} /> {t('track_job_tab')}
                     </button>
                   </div>
 
                   {activeTab === 'request' && (
                     <div className="card glass" style={{ padding: '2rem', textAlign: 'left', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 10px 30px rgba(239, 68, 68, 0.1)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                        <div style={{ background: 'var(--danger-color)', color: 'white', padding: '0.5rem', borderRadius: '50%', display: 'flex' }}>🚨</div>
+                        <div style={{ background: 'var(--danger-color)', color: 'white', padding: '0.5rem', borderRadius: '50%', display: 'flex' }}><AlertTriangle size={24} /></div>
                         <h3 style={{ margin: 0, color: 'var(--danger-color)' }}>{t('rescue_form_title')}</h3>
                       </div>
                       <p style={{ marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('rescue_form_desc')}</p>
@@ -244,7 +245,7 @@ export default function Home() {
                               </div>
                             ) : (
                               <>
-                                <div style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>📷</div>
+                                <div style={{ marginBottom: '0.25rem', color: 'var(--text-muted)' }}><Camera size={48} /></div>
                                 <p style={{ margin: 0, fontWeight: 600, color: 'var(--text-main)' }}>{t('upload_photo_rescue')}</p>
                                 <p style={{ margin: '0.25rem 0 0', fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('photo_optional')}</p>
                               </>
@@ -262,7 +263,7 @@ export default function Home() {
                   
                   {activeTab === 'track' && (
                     <div className="card glass" style={{ padding: '2.5rem 2rem', textAlign: 'center', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
-                      <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📍</div>
+                      <div style={{ color: 'var(--primary-color)', marginBottom: '1rem' }}><MapPin size={48} /></div>
                       <h3 style={{ marginBottom: '0.5rem', color: 'var(--primary-color)' }}>{t('track_your_job')}</h3>
                       <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>{t('track_job_desc')}</p>
                       
@@ -283,7 +284,7 @@ export default function Home() {
                 <div className="card glass" style={{ width: '100%', maxWidth: '450px', padding: '2.5rem 2rem', textAlign: 'center', border: assignedMechanic ? '1px solid var(--accent-color)' : '1px solid var(--primary-color)' }}>
                    {!assignedMechanic ? (
                      <>
-                        <div style={{ fontSize: '3rem', animation: 'pulse 1.5s infinite' }}>⏳</div>
+                        <div style={{ animation: 'pulse 1.5s infinite', color: 'var(--primary-color)' }}><Hourglass size={48} /></div>
                         <h3 style={{ marginTop: '1rem', color: 'var(--primary-color)' }}>{t('request_sent')}</h3>
                         <p style={{ marginTop: '0.5rem', color: 'var(--text-muted)' }}>{t('request_sent_desc')}</p>
                         <div style={{ background: 'var(--surface-hover)', padding: '1rem', borderRadius: '8px', marginTop: '1.5rem', border: '1px solid var(--border-color)' }}>
@@ -293,15 +294,15 @@ export default function Home() {
                      </>
                    ) : (
                      <>
-                        <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>👨‍🔧</div>
+                        <div style={{ color: 'var(--accent-color)', marginBottom: '1rem' }}><UserCog size={64} /></div>
                         <h3 style={{ color: 'var(--accent-color)', fontSize: '1.5rem', marginBottom: '0.5rem' }}>{t('help_on_way')}</h3>
                         <div style={{ background: 'var(--surface-hover)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                           <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('assigned_mechanic')}</p>
                           <strong style={{ fontSize: '1.25rem', display: 'block', marginTop: '0.25rem' }}>{assignedMechanic.name}</strong>
                           <p style={{ margin: '0.25rem 0 1rem 0', color: 'var(--primary-color)' }}>{t('skill')}: {assignedMechanic.skill}</p>
                           
-                          <a href={`tel:${assignedMechanic.phone}`} style={{ display: 'inline-block', background: 'var(--accent-color)', color: 'var(--bg-color)', padding: '0.75rem 1.5rem', borderRadius: '999px', textDecoration: 'none', fontWeight: 'bold', marginBottom: '1rem' }}>
-                            📞 {t('call_mechanic')} {assignedMechanic.phone}
+                          <a href={`tel:${assignedMechanic.phone}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', background: 'var(--accent-color)', color: 'var(--bg-color)', padding: '0.75rem 1.5rem', borderRadius: '999px', textDecoration: 'none', fontWeight: 'bold', marginBottom: '1rem' }}>
+                            <Phone size={18} /> {t('call_mechanic')} {assignedMechanic.phone}
                           </a>
                         </div>
                      </>
@@ -318,8 +319,8 @@ export default function Home() {
                 <div style={{ height: '1px', width: '50px', background: 'var(--border-color)' }}></div>
               </div>
 
-              <a href="tel:0919910089" className="btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.25rem', borderRadius: '999px', boxShadow: 'var(--shadow-glow)' }}>
-                📞 0919 91 00 89
+              <a href="tel:0919910089" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem 2.5rem', fontSize: '1.25rem', borderRadius: '999px', boxShadow: 'var(--shadow-glow)', textDecoration: 'none' }}>
+                <Phone size={24} /> 0919 91 00 89
               </a>
             </div>
           </div>
@@ -329,7 +330,7 @@ export default function Home() {
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
             <Link href="/spare-parts" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>⚙️</div>
+                <div style={{ color: 'var(--text-main)', marginBottom: '1rem' }}><Settings size={64} /></div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t('genuine_parts')}</h3>
                 <p style={{ color: 'var(--text-muted)' }}>{t('genuine_parts_desc')}</p>
                 <div style={{ marginTop: '1.5rem', color: 'var(--primary-color)', fontWeight: 'bold' }}>{t('search_inventory_btn')} &rarr;</div>
@@ -338,7 +339,7 @@ export default function Home() {
 
             <Link href="/request-part" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--accent-color)' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📦</div>
+                <div style={{ color: 'var(--accent-color)', marginBottom: '1rem' }}><Package size={64} /></div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t('request_material')}</h3>
                 <p style={{ color: 'var(--text-muted)' }}>{t('request_material_desc')}</p>
                 <div style={{ marginTop: '1.5rem', color: 'var(--accent-color)', fontWeight: 'bold' }}>{t('request_btn')} &rarr;</div>
@@ -347,7 +348,7 @@ export default function Home() {
 
             <Link href="/services" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📋</div>
+                <div style={{ color: 'var(--text-main)', marginBottom: '1rem' }}><ClipboardList size={64} /></div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t('premium_services')}</h3>
                 <p style={{ color: 'var(--text-muted)' }}>{t('premium_services_desc')}</p>
                 <div style={{ marginTop: '1.5rem', color: 'var(--primary-color)', fontWeight: 'bold' }}>{t('view_services_btn')} &rarr;</div>
@@ -356,7 +357,7 @@ export default function Home() {
 
             <Link href="/maintenance" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📅</div>
+                <div style={{ color: 'var(--text-main)', marginBottom: '1rem' }}><CalendarClock size={64} /></div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t('book_maintenance')}</h3>
                 <p style={{ color: 'var(--text-muted)' }}>{t('book_maintenance_desc')}</p>
                 <div style={{ marginTop: '1.5rem', color: 'var(--primary-color)', fontWeight: 'bold' }}>{t('schedule_now_btn')} &rarr;</div>
@@ -365,7 +366,7 @@ export default function Home() {
             
             <Link href="/cars" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card glass" style={{ padding: '3rem 2rem', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🚗</div>
+                <div style={{ color: 'var(--text-main)', marginBottom: '1rem' }}><CarFront size={64} /></div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t('cars_for_sale')}</h3>
                 <p style={{ color: 'var(--text-muted)' }}>{t('cars_desc')}</p>
                 <div style={{ marginTop: '1.5rem', color: 'var(--accent-color)', fontWeight: 'bold' }}>{t('view_cars_btn')} &rarr;</div>

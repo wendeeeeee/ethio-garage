@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import styles from './admin.module.css';
+import { Activity, Wrench, AlertCircle, Clock } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -48,22 +49,22 @@ export default function AdminDashboard() {
       
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <h3>Active Jobs</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Activity size={20} /> Active Jobs</h3>
           <div className={styles.value}>{stats.activeJobs}</div>
         </div>
         <div className={styles.statCard}>
-          <h3>Available Mechanics</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Wrench size={20} /> Available Mechanics</h3>
           <div className={styles.value}>{stats.mechanics}</div>
         </div>
 
         <div className={styles.statCard}>
-          <h3>Low Stock Parts</h3>
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><AlertCircle size={20} /> Low Stock Parts</h3>
           <div className={styles.value}>{stats.lowStockParts}</div>
         </div>
       </div>
 
       <div className="card" style={{ marginTop: '2rem' }}>
-        <h2>Recent Activity</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Clock size={24} /> Recent Activity</h2>
         <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>
           Map overview and recent job list will appear here.
         </p>

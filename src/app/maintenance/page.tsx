@@ -5,18 +5,25 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { CalendarClock } from 'lucide-react';
 
 export default function MaintenancePage() {
   const { t } = useLanguage();
   const [isBooking, setIsBooking] = useState(false);
   const [maintName, setMaintName] = useState('');
   const [maintPhone, setMaintPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [maintVehicle, setMaintVehicle] = useState('');
   const [maintService, setMaintService] = useState('');
   const [maintDate, setMaintDate] = useState('');
 
   const handleMaintenanceBooking = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (maintPhone.length !== 10) {
+      setPhoneError('Phone number must be exactly 10 digits');
+      return;
+    }
+    
     setIsBooking(true);
 
     const jobNum = 'MNT-' + Math.floor(Math.random() * 10000);
@@ -103,15 +110,25 @@ export default function MaintenancePage() {
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('phone_placeholder')}</label>
               <input 
                 type="tel" placeholder={t('phone_placeholder')} required 
-                pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
-                value={maintPhone} onChange={e => setMaintPhone(e.target.value.replace(/\D/g, ''))}
-                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--bg-color)' }}
+                maxLength={10}
+                value={maintPhone} 
+                onChange={e => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  setMaintPhone(val);
+                  if (val.length > 0 && val.length !== 10) {
+                    setPhoneError('Phone number must be exactly 10 digits');
+                  } else {
+                    setPhoneError('');
+                  }
+                }}
+                style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '8px', border: `1px solid ${phoneError ? 'var(--danger-color)' : 'var(--border-color)'}`, background: 'var(--bg-color)', outline: 'none' }}
               />
+              {phoneError && <span style={{ color: 'var(--danger-color)', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>{phoneError}</span>}
             </div>
 
             <div style={{ gridColumn: '1 / -1', marginTop: '1rem' }}>
-              <button type="submit" className="btn-primary" disabled={isBooking} style={{ width: '100%', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem' }}>
-                {isBooking ? t('booking') : `📅 ${t('confirm_booking')}`}
+              <button type="submit" className="btn-primary" disabled={isBooking} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '1rem', borderRadius: '8px', fontSize: '1.1rem' }}>
+                {isBooking ? t('booking') : <><CalendarClock size={20} /> {t('confirm_booking')}</>}
               </button>
             </div>
           </form>
