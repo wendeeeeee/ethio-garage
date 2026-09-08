@@ -82,6 +82,14 @@ export default function SparePartsPage() {
           <p style={{ fontSize: '1.15rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>
             {t('genuine_parts_desc')}
           </p>
+          
+          <div style={{ marginBottom: '2rem' }}>
+            <Link href="/request-part">
+              <button className="btn-primary" style={{ padding: '0.75rem 2rem', borderRadius: '999px', fontSize: '1rem', background: 'var(--surface-color)', color: 'var(--primary-color)', border: '2px solid var(--primary-color)' }}>
+                {t('request_material')} &rarr;
+              </button>
+            </Link>
+          </div>
 
           {/* Search Bar & Category Dropdown */}
           <form onSubmit={handleSearchSubmit} style={{ position: 'relative', maxWidth: '700px', margin: '0 auto 2rem', display: 'flex', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', borderRadius: '999px' }}>
