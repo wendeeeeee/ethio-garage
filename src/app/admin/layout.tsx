@@ -14,6 +14,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/vehicles" className={styles.navLink}>Vehicles</Link>
           <Link href="/admin/cars" className={styles.navLink}>Cars for Sale</Link>
           <Link href="/admin/jobs" className={styles.navLink}>Service Jobs</Link>
+          <Link href="/admin/material-requests" className={styles.navLink}>Material Requests</Link>
           <Link href="/admin/mechanics" className={styles.navLink}>Mechanics</Link>
           <Link href="/admin/parts" className={styles.navLink}>Spare Parts</Link>
           <Link href="/admin/services" className={styles.navLink}>Services</Link>
