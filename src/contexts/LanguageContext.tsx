@@ -47,6 +47,17 @@ const translations: Translations = {
   back_home: { en: 'Back to Home', am: 'ወደ ዋና ገፅ ተመለስ' },
   or_call_us: { en: 'OR CALL US', am: 'ወይም ይደውሉልን' },
 
+  // Request Rescue & Track Job Tabs
+  request_rescue_tab: { en: 'Request Rescue', am: 'እርዳታ ይጠይቁ' },
+  track_job_tab: { en: 'Track Job', am: 'ስራ ይከታተሉ' },
+  sending: { en: 'Sending...', am: 'በመላክ ላይ...' },
+  track_your_job: { en: 'Track Your Job', am: 'ስራዎን ይከታተሉ' },
+  track_job_desc: { en: 'Enter the Tracking Number provided to you to see your assigned mechanic and status.', am: 'የተመደበውን መካኒክ እና ሁኔታውን ለማየት የተሰጠዎትን የመከታተያ ቁጥር ያስገቡ።' },
+  track_job_placeholder: { en: 'e.g. EMG-1234 or MNT-5678', am: 'ለምሳሌ EMG-1234 ወይም MNT-5678' },
+  track_job_btn: { en: 'Track Job', am: 'ስራ ይከታተሉ' },
+  invalid_token: { en: 'Invalid tracking token. Please check and try again.', am: 'ልክ ያልሆነ የመከታተያ ኮድ። እባክዎ ያረጋግጡና እንደገና ይሞክሩ።' },
+  request_failed: { en: 'Failed to send request. Please call us directly.', am: 'ጥያቄ መላክ አልተቻለም። እባክዎ በቀጥታ ይደውሉልን።' },
+
   // Emergency Issues
   "Engine won't start": { en: "Engine won't start", am: 'ሞተር አይነሳም' },
   "Flat tire": { en: "Flat tire", am: 'ጎማ ተንፍሷል' },
