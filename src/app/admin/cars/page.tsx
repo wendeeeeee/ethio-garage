@@ -243,7 +243,16 @@ export default function PostCarPage() {
               </div>
               <div>
                 <label style={labelStyle}>Phone Number *</label>
-                <input name="contact_phone" required placeholder="e.g. 0911234567" value={form.contact_phone} onChange={handleChange} style={inputStyle} />
+                <input 
+                  name="contact_phone" 
+                  type="tel"
+                  required 
+                  placeholder="e.g. 0911234567 (10 digits)" 
+                  pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
+                  value={form.contact_phone} 
+                  onChange={e => handleChange({ ...e, target: { ...e.target, name: e.target.name, value: e.target.value.replace(/\D/g, '') } } as React.ChangeEvent<HTMLInputElement>)} 
+                  style={inputStyle} 
+                />
               </div>
             </div>
           </div>

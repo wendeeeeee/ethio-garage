@@ -55,11 +55,12 @@ export default function MechanicsPage() {
             style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
           />
           <input 
-            type="text" 
-            placeholder="Phone" 
-            required 
+            type="tel" 
+            placeholder="Phone Number (10 digits)" 
+            required
+            pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
             value={newMechanic.phone}
-            onChange={e => setNewMechanic({...newMechanic, phone: e.target.value})}
+            onChange={e => setNewMechanic({...newMechanic, phone: e.target.value.replace(/\D/g, '')})}
             style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
           />
           <input 

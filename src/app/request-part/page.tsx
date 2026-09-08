@@ -107,8 +107,9 @@ export default function RequestPartPage() {
               <div>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('phone_placeholder')}</label>
                 <input 
-                  type="text" placeholder={t('phone_placeholder')} required 
-                  value={reqPhone} onChange={e => setReqPhone(e.target.value)}
+                  type="tel" placeholder={t('phone_placeholder')} required 
+                  pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
+                  value={reqPhone} onChange={e => setReqPhone(e.target.value.replace(/\D/g, ''))}
                   style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--bg-color)' }}
                 />
               </div>

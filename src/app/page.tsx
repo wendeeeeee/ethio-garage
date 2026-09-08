@@ -174,8 +174,9 @@ export default function Home() {
                           style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
                         />
                         <input 
-                          type="text" placeholder={t('phone_placeholder')} required 
-                          value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value)}
+                          type="tel" placeholder={t('phone_placeholder')} required 
+                          pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
+                          value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value.replace(/\D/g, ''))}
                           style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
                         />
                         <input 
