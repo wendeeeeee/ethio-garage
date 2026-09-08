@@ -314,14 +314,32 @@ export default function ServiceJobsPage() {
                     {j.job_number.startsWith('MNT-') ? <span style={{ color: 'var(--accent-color)' }}>📅 {j.job_number}</span> : j.job_number}
                   </td>
                   <td style={{ padding: '0.75rem' }}>
-                    {j.problem.startsWith('Scheduled for') ? (
-                      <div style={{ background: 'var(--surface-hover)', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--accent-color)' }}>
-                        <strong>{j.problem.split('|')[0]}</strong><br/>
-                        <span style={{ fontSize: '0.875rem' }}>{j.problem.split('|').slice(1).join('|')}</span>
-                      </div>
-                    ) : (
-                      j.problem
-                    )}
+                    {(() => {
+                      const allParts = j.problem.split(' | ');
+                      const photoPart = allParts.find(p => p.startsWith('Photo: '));
+                      const photoUrl = photoPart ? photoPart.replace('Photo: ', '') : null;
+                      const textParts = allParts.filter(p => !p.startsWith('Photo: '));
+                      const cleanProblem = textParts.join(' | ');
+
+                      return (
+                        <>
+                          {cleanProblem.startsWith('Scheduled for') || cleanProblem.startsWith('SOS:') ? (
+                            <div style={{ background: 'var(--surface-hover)', padding: '0.5rem', borderRadius: '4px', border: cleanProblem.startsWith('SOS:') ? '1px solid var(--danger-color)' : '1px solid var(--accent-color)' }}>
+                              <strong>{cleanProblem.split('|')[0]}</strong><br/>
+                              <span style={{ fontSize: '0.875rem' }}>{cleanProblem.split('|').slice(1).join('|')}</span>
+                            </div>
+                          ) : (
+                            cleanProblem
+                          )}
+                          {photoUrl && (
+                            <a href={photoUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', marginTop: '0.5rem' }}>
+                              <img src={photoUrl} alt="Attached" style={{ maxHeight: '60px', borderRadius: '4px', border: '1px solid var(--border-color)', objectFit: 'cover' }} />
+                              <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--primary-color)' }}>📷 View Photo</span>
+                            </a>
+                          )}
+                        </>
+                      );
+                    })()}
                   </td>
                   <td style={{ padding: '0.75rem' }}>
                     <a 
@@ -391,19 +409,35 @@ export default function ServiceJobsPage() {
           <div className="card" style={{ width: '100%', maxWidth: '500px', padding: '2rem', textAlign: 'center', border: '2px solid var(--danger-color)', animation: 'pulse 2s infinite' }}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚨</div>
             <h2 style={{ color: 'var(--danger-color)', marginBottom: '0.5rem' }}>NEW SOS REQUEST!</h2>
-            <p style={{ color: 'var(--text-main)', fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 'bold' }}>{newSosJob.problem.split('|')[0]}</p>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
-              {newSosJob.problem.split('|').slice(1).join('|')} <br/>
-              📍 Location: 
-              <a 
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newSosJob.location)}`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ color: 'var(--primary-color)', textDecoration: 'underline', marginLeft: '0.5rem' }}
-              >
-                {newSosJob.location} (Open Map)
-              </a>
-            </p>
+            {(() => {
+              const allParts = newSosJob.problem.split(' | ');
+              const photoPart = allParts.find(p => p.startsWith('Photo: '));
+              const photoUrl = photoPart ? photoPart.replace('Photo: ', '') : null;
+              const textParts = allParts.filter(p => !p.startsWith('Photo: '));
+              
+              return (
+                <>
+                  <p style={{ color: 'var(--text-main)', fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 'bold' }}>{textParts[0]}</p>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                    {textParts.slice(1).join(' | ')} <br/>
+                    📍 Location: 
+                    <a 
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newSosJob.location)}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ color: 'var(--primary-color)', textDecoration: 'underline', marginLeft: '0.5rem' }}
+                    >
+                      {newSosJob.location} (Open Map)
+                    </a>
+                  </p>
+                  {photoUrl && (
+                    <div style={{ marginBottom: '2rem' }}>
+                      <img src={photoUrl} alt="Attached" style={{ maxHeight: '150px', borderRadius: '8px', border: '2px solid var(--border-color)', objectFit: 'cover' }} />
+                    </div>
+                  )}
+                </>
+              );
+            })()}
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <select 
