@@ -16,9 +16,15 @@ export default function RequestPartPage() {
   const [partPhoto, setPartPhoto] = useState<File | null>(null);
   const [partPhotoPreview, setPartPhotoPreview] = useState<string | null>(null);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
 
   const handleMaterialRequest = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (reqPhone.length !== 10) {
+      setPhoneError('Phone number must be exactly 10 digits');
+      return;
+    }
+
     setIsRequesting(true);
 
     const jobNum = 'MAT-' + Math.floor(Math.random() * 10000);
@@ -108,10 +114,20 @@ export default function RequestPartPage() {
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('phone_placeholder')}</label>
                 <input 
                   type="tel" placeholder={t('phone_placeholder')} required 
-                  pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
-                  value={reqPhone} onChange={e => setReqPhone(e.target.value.replace(/\D/g, ''))}
-                  style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--bg-color)' }}
+                  maxLength={10}
+                  value={reqPhone} 
+                  onChange={e => {
+                    const val = e.target.value.replace(/\D/g, '');
+                    setReqPhone(val);
+                    if (val.length > 0 && val.length !== 10) {
+                      setPhoneError('Phone number must be exactly 10 digits');
+                    } else {
+                      setPhoneError('');
+                    }
+                  }}
+                  style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '8px', border: `1px solid ${phoneError ? 'var(--danger-color)' : 'var(--border-color)'}`, background: 'var(--bg-color)', outline: 'none' }}
                 />
+                {phoneError && <span style={{ color: 'var(--danger-color)', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block' }}>{phoneError}</span>}
               </div>
               
               {/* Photo Upload */}

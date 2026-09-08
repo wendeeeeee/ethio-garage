@@ -14,6 +14,7 @@ export default function Home() {
   const [isRequesting, setIsRequesting] = useState(false);
   const [emergencyName, setEmergencyName] = useState('');
   const [emergencyPhone, setEmergencyPhone] = useState('');
+  const [emergencyPhoneError, setEmergencyPhoneError] = useState('');
   const [emergencyVehicle, setEmergencyVehicle] = useState('');
   const [emergencyProblem, setEmergencyProblem] = useState('');
   const [emergencyLocation, setEmergencyLocation] = useState('');
@@ -73,8 +74,13 @@ export default function Home() {
     }
   };
 
-  const handleEmergencyRescue = async (e: React.FormEvent) => {
+  const handleEmergencySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (emergencyPhone.length !== 10) {
+      setEmergencyPhoneError('Phone number must be exactly 10 digits');
+      return;
+    }
+    
     setIsRequesting(true);
 
     const jobNum = 'EMG-' + Math.floor(Math.random() * 10000);
@@ -167,18 +173,30 @@ export default function Home() {
                         <h3 style={{ margin: 0, color: 'var(--danger-color)' }}>{t('rescue_form_title')}</h3>
                       </div>
                       <p style={{ marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>{t('rescue_form_desc')}</p>
-                      <form onSubmit={handleEmergencyRescue} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <form onSubmit={handleEmergencySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <input 
                           type="text" placeholder={t('name_placeholder')} required 
                           value={emergencyName} onChange={e => setEmergencyName(e.target.value)}
                           style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
                         />
-                        <input 
-                          type="tel" placeholder={t('phone_placeholder')} required 
-                          pattern="\d{10}" title="Phone number must be exactly 10 digits" minLength={10} maxLength={10}
-                          value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value.replace(/\D/g, ''))}
-                          style={{ padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', background: 'var(--surface-color)' }}
-                        />
+                        <div>
+                          <input 
+                            type="tel" placeholder={t('phone_placeholder')} required 
+                            maxLength={10}
+                            value={emergencyPhone} 
+                            onChange={e => {
+                              const val = e.target.value.replace(/\D/g, '');
+                              setEmergencyPhone(val);
+                              if (val.length > 0 && val.length !== 10) {
+                                setEmergencyPhoneError('Phone number must be exactly 10 digits');
+                              } else {
+                                setEmergencyPhoneError('');
+                              }
+                            }}
+                            style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '8px', border: `1px solid ${emergencyPhoneError ? 'var(--danger-color)' : 'var(--border-color)'}`, background: 'var(--surface-color)', outline: 'none' }}
+                          />
+                          {emergencyPhoneError && <span style={{ color: 'var(--danger-color)', fontSize: '0.85rem', marginTop: '0.5rem', display: 'block', textAlign: 'left' }}>{emergencyPhoneError}</span>}
+                        </div>
                         <input 
                           type="text" placeholder={t('vehicle_placeholder')} required 
                           value={emergencyVehicle} onChange={e => setEmergencyVehicle(e.target.value)}
